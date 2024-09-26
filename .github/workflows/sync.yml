@@ -8,16 +8,24 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+
     steps:
+      # Step 1: Check out your forked repository
       - name: Checkout fork repository
         uses: actions/checkout@v3
         with:
-          repository: N-SDM/N-SDM
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}  # Using your GitHub token to authenticate push
 
-      - name: Add upstream repository
+      # Step 2: Set Git user identity
+      - name: Configure Git user
         run: |
-          git remote add upstream https://github.com/antadde/N-SDM.git
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+      
+      # Step 3: Add upstream repository and sync
+      - name: Sync with upstream repository
+        run: |
+          git remote add upstream https://github.com/antadde/N-SDM.git  # Upstream repo URL
           git fetch upstream
-          git merge upstream/main --allow-unrelated-histories
-          git push origin main
+          git merge upstream/main --allow-unrelated-histories  # Merge upstream changes into fork
+          git push origin main  # Push the changes back to your fork
