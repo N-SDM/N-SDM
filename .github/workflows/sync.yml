@@ -27,5 +27,6 @@ jobs:
         run: |
           git remote add upstream https://github.com/antadde/N-SDM.git  # Upstream repo URL
           git fetch upstream
-          git merge upstream/main --allow-unrelated-histories  # Merge upstream changes into fork
+          git merge upstream/main --no-ff || true  # Merge upstream changes, ignore conflict errors
+          git merge --strategy-option theirs  # Resolve conflicts by using the upstream version
           git push origin main  # Push the changes back to your fork
